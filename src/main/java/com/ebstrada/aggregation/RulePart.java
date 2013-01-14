@@ -12,6 +12,9 @@ public class RulePart extends ArrayList<OrCondition> {
     
     public void parse(String ruleStr) throws InvalidRulePartException {
 	clear();
+	if ( ruleStr.trim().equals("?") ) {
+	    throw new InvalidRulePartException();
+	}
 	int ternaryOpOffset = ruleStr.indexOf('?');
 	if (ternaryOpOffset > -1) {
 	    OrCondition orCondition = new OrCondition();

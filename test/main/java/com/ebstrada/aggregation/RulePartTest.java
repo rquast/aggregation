@@ -61,7 +61,7 @@ public class RulePartTest {
     @Test
     public void testParseIncorrect5() throws Exception {
 	exception.expect(InvalidRulePartException.class);
-	rulePart.parse("1");
+	rulePart.parse("A1");
     }
 
 }
