@@ -6,9 +6,11 @@ import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import com.ebstrada.aggregation.exception.FlagException;
 import com.ebstrada.aggregation.exception.NoMatchException;
 
 @RunWith(JUnit4.class)
@@ -18,6 +20,9 @@ public class AggregationTest {
     private static final Rule DEFAULT_RULE = new Rule();
     private static final Selection DEFAULT_SELECTION = new Selection(new String[]{"C"});
     private static final double DEFAULT_AGGREGATE = -1.0d;
+    
+    @org.junit.Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -27,6 +32,7 @@ public class AggregationTest {
 
     @After
     public void tearDown() throws Exception {
+	exception = ExpectedException.none();
 	aggregation = null;
     }
     
@@ -61,8 +67,13 @@ public class AggregationTest {
     }
     
     @Test
-    public void testUserSpecifiedFlagException() {
-	fail("Not yet implemented");
+    public void testUserSpecifiedFlagException() throws Exception {
+	exception.expect(FlagException.class);
+	Rule rule = new Rule();
+	rule.parse("a?+1:b?!!error!!:!!blank!!?-6:2");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"B"}));
+	aggregation.getAggregate();
     }
 
 }
