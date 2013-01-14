@@ -89,8 +89,8 @@ public class AndConditionTest {
     public void testCheckConditionValueForFlag() throws Exception {
 	AndCondition andCondition = new AndCondition();
 	Selection selection = new Selection(new String[]{"B"});
-	andCondition.parse("B|!!blank!!");
-	assertTrue(andCondition.match(selection));
+	andCondition.parse("!!blank!!");
+	assertFalse(andCondition.match(selection));
     }
     
 }

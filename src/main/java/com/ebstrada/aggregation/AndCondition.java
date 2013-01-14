@@ -6,6 +6,8 @@ import java.util.List;
 import com.ebstrada.aggregation.exception.FlagException;
 
 public class AndCondition {
+    
+    private static final String BLANK_CONDITION = "!!blank!!";
 
     private List<String> conditionValues;
     
@@ -17,9 +19,11 @@ public class AndCondition {
 	for (String selectionValue: selectionValues) {
 	    boolean match = false;
 	    for (String conditionValue: conditionValues) {
-		if (checkConditionValueForFlag(conditionValue, selectionValue)) {
-		    match = true;
-		    break;
+		if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) {
+		    match = checkConditionFlag(conditionValue, selectionValue);
+		    if ( match == true ) {
+			break;
+		    }
 		} else if (conditionValue.startsWith("!")) {
 		    if (!(selectionValue.equalsIgnoreCase(conditionValue.replaceFirst("!", "")))) {
 			match = true;
@@ -39,17 +43,13 @@ public class AndCondition {
 	return true;
     }
 
-    private boolean checkConditionValueForFlag(String conditionValue,
+    private boolean checkConditionFlag(String conditionValue,
 	    String selectionValue) throws FlagException {
-	
-	if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) {
-	    if (conditionValue.equalsIgnoreCase("!!blank!!") 
-		    && (selectionValue == null 
-		    	|| selectionValue.trim().length() <= 0)) {
+	if (conditionValue.equalsIgnoreCase(BLANK_CONDITION)) {
+	    if ( selectionValue == null || selectionValue.length() <= 0 ) {
 		return true;
 	    }
 	}
-	
 	return false;
     }
 
