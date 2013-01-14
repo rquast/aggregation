@@ -3,6 +3,8 @@ package com.ebstrada.aggregation;
 import java.util.Arrays;
 import java.util.List;
 
+import com.ebstrada.aggregation.exception.FlagException;
+
 public class AndCondition {
 
     private List<String> conditionValues;
@@ -11,7 +13,7 @@ public class AndCondition {
 	conditionValues = Arrays.asList(conditionStr.split("\\,"));
     }
 
-    public boolean match(Selection selectionValues) {
+    public boolean match(Selection selectionValues) throws FlagException {
 	for (String selectionValue: selectionValues) {
 	    boolean match = false;
 	    for (String conditionValue: conditionValues) {

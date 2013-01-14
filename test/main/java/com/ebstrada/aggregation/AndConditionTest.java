@@ -7,13 +7,13 @@ import org.junit.Test;
 public class AndConditionTest {
     
     @Test
-    public void testParse1() {
+    public void testParse1() throws Exception {
 	AndCondition conditionValue = new AndCondition();
 	conditionValue.parse("!C");
     }
     
     @Test
-    public void testMatchTrue1() {
+    public void testMatchTrue1() throws Exception {
 	AndCondition conditionValue = new AndCondition();
 	Selection selection = new Selection(new String[]{"A"});
 	conditionValue.parse("A");
@@ -21,7 +21,7 @@ public class AndConditionTest {
     }
     
     @Test
-    public void testMatchFalse1() {
+    public void testMatchFalse1() throws Exception {
 	AndCondition conditionValue = new AndCondition();
 	Selection selection = new Selection(new String[]{"AB"});
 	conditionValue.parse("A");
@@ -29,7 +29,7 @@ public class AndConditionTest {
     }
     
     @Test
-    public void testMatchFalse2() {
+    public void testMatchFalse2() throws Exception {
 	AndCondition conditionValue = new AndCondition();
 	Selection selection = new Selection(new String[]{"A", "B"});
 	conditionValue.parse("A");
@@ -37,7 +37,7 @@ public class AndConditionTest {
     }
     
     @Test
-    public void testMatchFalse3() {
+    public void testMatchFalse3() throws Exception {
 	AndCondition conditionValue = new AndCondition();
 	Selection selection = new Selection(new String[]{"A"});
 	conditionValue.parse("B");
@@ -46,7 +46,7 @@ public class AndConditionTest {
     
     // test for negations
     @Test
-    public void testNegationIsTrue() {
+    public void testNegationIsTrue() throws Exception {
 	AndCondition conditionValue = new AndCondition();
 	Selection selection = new Selection(new String[]{"B"});
 	conditionValue.parse("!A");
@@ -54,7 +54,7 @@ public class AndConditionTest {
     }
     
     @Test
-    public void testNegationIsFalse() {
+    public void testNegationIsFalse() throws Exception {
 	AndCondition conditionValue = new AndCondition();
 	Selection selection = new Selection(new String[]{"A"});
 	conditionValue.parse("!A");
@@ -62,7 +62,7 @@ public class AndConditionTest {
     }
     
     @Test
-    public void testTrueAndNegationTrue() {
+    public void testTrueAndNegationTrue() throws Exception {
 	AndCondition conditionValue = new AndCondition();
 	Selection selection = new Selection(new String[]{"B", "A", "D"});
 	conditionValue.parse("B,!CA");

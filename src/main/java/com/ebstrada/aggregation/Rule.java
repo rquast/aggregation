@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.ebstrada.aggregation.exception.InvalidRulePartException;
 import com.ebstrada.aggregation.exception.NoMatchException;
+import com.ebstrada.aggregation.exception.FlagException;
 
 @SuppressWarnings("serial")
 public class Rule extends ArrayList<RulePart> {
@@ -34,7 +35,7 @@ public class Rule extends ArrayList<RulePart> {
 	
     }
     
-    public Result calculate(Selection selection) throws NoMatchException {
+    public Result calculate(Selection selection) throws NoMatchException, FlagException {
 	for (RulePart rulePart: this) {
 	    if (rulePart.match(selection)) {
 		return rulePart.getResult();

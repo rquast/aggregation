@@ -49,5 +49,15 @@ public class AggregationTest {
 	double aggregate = aggregation.getAggregate();
 	Assert.assertEquals(DEFAULT_AGGREGATE, aggregate);
     }
+    
+    @Test
+    public void testDefaultAggregate2() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("a?1:0");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"A"}));
+	double aggregate = aggregation.getAggregate();
+	Assert.assertEquals(1.0d, aggregate);
+    }
 
 }

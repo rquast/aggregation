@@ -3,6 +3,7 @@ package com.ebstrada.aggregation;
 import java.util.ArrayList;
 
 import com.ebstrada.aggregation.exception.InvalidRulePartException;
+import com.ebstrada.aggregation.exception.FlagException;
 
 @SuppressWarnings("serial")
 public class RulePart extends ArrayList<OrCondition> {
@@ -25,7 +26,7 @@ public class RulePart extends ArrayList<OrCondition> {
 	this.result = parseScoreString(ruleStr);
     }
 
-    public boolean match(Selection selection) {
+    public boolean match(Selection selection) throws FlagException {
 	if ( size() <= 0 ) {
 	    return true;
 	}

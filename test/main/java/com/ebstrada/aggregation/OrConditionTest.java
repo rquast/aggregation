@@ -15,7 +15,7 @@ public class OrConditionTest {
     }
 
     @Test
-    public void testMatch() {
+    public void testMatch() throws Exception {
 	Selection selection = new Selection(new String[]{"A"});
 	orCondition.parse("A");
 	assertTrue(orCondition.match(selection));
