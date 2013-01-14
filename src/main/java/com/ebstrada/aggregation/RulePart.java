@@ -12,7 +12,7 @@ public class RulePart extends ArrayList<OrCondition> {
     
     public void parse(String ruleStr) throws InvalidRulePartException {
 	clear();
-	if ( ruleStr.trim().equals("?") ) {
+	if (ruleStr.trim().equals("?")) {
 	    throw new InvalidRulePartException();
 	}
 	int ternaryOpOffset = ruleStr.indexOf('?');
@@ -30,7 +30,7 @@ public class RulePart extends ArrayList<OrCondition> {
     }
 
     public boolean match(Selection selection) throws FlagException {
-	if ( size() <= 0 ) {
+	if (size() <= 0) {
 	    return true;
 	}
 	for (OrCondition orCondition: this) {
@@ -54,7 +54,7 @@ public class RulePart extends ArrayList<OrCondition> {
 	double score;
 	try {
 	    score = Double.parseDouble(scoreString);
-	} catch ( Exception ex ) {
+	} catch (Exception ex) {
 	    InvalidRulePartException ire = new InvalidRulePartException(ex);
 	    throw ire;
 	}

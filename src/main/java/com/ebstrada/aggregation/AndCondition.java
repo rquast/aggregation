@@ -16,31 +16,46 @@ public class AndCondition {
     }
 
     public boolean match(Selection selectionValues) throws FlagException {
-	for (String selectionValue: selectionValues) {
-	    boolean match = false;
+	if ( selectionValues == null || selectionValues.size() <= 0 ) {
 	    for (String conditionValue: conditionValues) {
-		if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) {
-		    match = checkConditionFlag(conditionValue, selectionValue);
-		    if ( match == true ) {
-			break;
-		    }
-		} else if (conditionValue.startsWith("!")) {
-		    if (!(selectionValue.equalsIgnoreCase(conditionValue.replaceFirst("!", "")))) {
-			match = true;
-			break;
-		    }
-		} else {
-		    if (selectionValue.equalsIgnoreCase(conditionValue)) {
+		if ( checkConditionValue(conditionValue, "") ) {
+		    return true;
+		}
+	    }
+	    return false;
+	} else {
+	    for (String selectionValue: selectionValues) {
+		boolean match = false;
+		for (String conditionValue: conditionValues) {
+		    if ( checkConditionValue(conditionValue, selectionValue) ) {
 			match = true;
 			break;
 		    }
 		}
+		if ( match == false ) {
+		    return false;
+		}
 	    }
-	    if (match == false) {
-		return false;
+	    return true;
+	}
+    }
+    
+    private boolean checkConditionValue(String conditionValue, 
+	    String selectionValue) throws FlagException {
+	if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) {
+	    if ( checkConditionFlag(conditionValue, selectionValue) ) {
+		return true;
+	    }
+	} else if (conditionValue.startsWith("!")) {
+	    if (!(selectionValue.equalsIgnoreCase(conditionValue.replaceFirst("!", "")))) {
+		return true;
+	    }
+	} else {
+	    if (selectionValue.equalsIgnoreCase(conditionValue)) {
+		return true;
 	    }
 	}
-	return true;
+	return false;
     }
 
     private boolean checkConditionFlag(String conditionValue,

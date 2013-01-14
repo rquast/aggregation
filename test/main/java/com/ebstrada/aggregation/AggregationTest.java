@@ -67,6 +67,16 @@ public class AggregationTest {
     }
     
     @Test
+    public void testComplexAggregate1() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("a?1:C|b,A|!!blank!!?-6:2");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{}));
+	double aggregate = aggregation.getAggregate();
+	Assert.assertEquals(-6.0d, aggregate);
+    }
+    
+    @Test
     public void testUserSpecifiedFlagException() throws Exception {
 	exception.expect(FlagException.class);
 	Rule rule = new Rule();
