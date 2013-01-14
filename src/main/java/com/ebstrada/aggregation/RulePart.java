@@ -41,6 +41,13 @@ public class RulePart extends ArrayList<OrCondition> {
     private Result parseScoreString(String string) throws InvalidRulePartException {
 	int ternaryOpOffset = string.indexOf('?');
 	String scoreString = string.substring(ternaryOpOffset + 1, string.length());
+	
+	if (isScoreValueAFlag(scoreString)) {
+	    Result res = new Result();
+	    res.setException(new FlagException());
+	    return res;
+	}
+	
 	double score;
 	try {
 	    score = Double.parseDouble(scoreString);
@@ -51,6 +58,13 @@ public class RulePart extends ArrayList<OrCondition> {
 	Result res = new Result();
 	res.setScore(score);
 	return res;
+    }
+    
+    private boolean isScoreValueAFlag(String scoreValue) {
+	if (scoreValue.trim().equalsIgnoreCase("!!error!!")) {
+	    return true;
+	}
+	return false;
     }
     
     public Result getResult() {

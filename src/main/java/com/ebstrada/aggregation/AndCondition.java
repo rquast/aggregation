@@ -43,7 +43,9 @@ public class AndCondition {
 	    String selectionValue) throws FlagException {
 	
 	if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) {
-	    if (conditionValue.equalsIgnoreCase("!!blank!!") && (selectionValue == null || selectionValue.trim().length() <= 0)) {
+	    if (conditionValue.equalsIgnoreCase("!!blank!!") 
+		    && (selectionValue == null 
+		    	|| selectionValue.trim().length() <= 0)) {
 		return true;
 	    }
 	}

@@ -59,5 +59,10 @@ public class AggregationTest {
 	double aggregate = aggregation.getAggregate();
 	Assert.assertEquals(1.0d, aggregate);
     }
+    
+    @Test
+    public void testUserSpecifiedFlagException() {
+	fail("Not yet implemented");
+    }
 
 }

@@ -7,8 +7,7 @@ import org.junit.Test;
 public class ResultTest {
 
     @Test
-    public void testMeetsUserSpecifiedErrorCondition() {
+    public void testUserSpecifiedFlagException() {
 	fail("Not yet implemented");
     }
-
 }
