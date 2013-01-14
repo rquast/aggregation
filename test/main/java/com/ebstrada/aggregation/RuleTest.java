@@ -35,18 +35,4 @@ public class RuleTest {
 	rule.parse("A:+1:B?+1:C?-1");
     }
 
-    @Test
-    public void testParseInvalidRule2() throws Exception {
-	exception.expect(InvalidRulePartException.class);
-	Rule rule = new Rule();
-	rule.parse("A?1");
-    }
-    
-    @Test
-    public void testParseInvalidRule3() throws Exception {
-	exception.expect(InvalidRulePartException.class);
-	Rule rule = new Rule();
-	rule.parse("A?1:B?1:C?1");
-    }
-
 }
