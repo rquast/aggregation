@@ -2,8 +2,8 @@ package com.ebstrada.aggregation;
 
 import java.util.ArrayList;
 
-import com.ebstrada.aggregation.exception.InvalidRulePartException;
 import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.InvalidRulePartException;
 
 @SuppressWarnings("serial")
 public class RulePart extends ArrayList<OrCondition> {

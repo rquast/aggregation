@@ -1,7 +1,7 @@
 package com.ebstrada.aggregation;
 
-import com.ebstrada.aggregation.exception.NoMatchException;
 import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.NoMatchException;
 
 public class Aggregation {
     

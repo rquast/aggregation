@@ -1,15 +1,13 @@
 package com.ebstrada.aggregation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import com.ebstrada.aggregation.exception.FlagException;
-import com.ebstrada.aggregation.exception.InvalidRulePartException;
 
 @RunWith(JUnit4.class)
 public class AndConditionTest {

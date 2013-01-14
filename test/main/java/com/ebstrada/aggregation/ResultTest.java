@@ -1,7 +1,5 @@
 package com.ebstrada.aggregation;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

@@ -2,9 +2,9 @@ package com.ebstrada.aggregation;
 
 import java.util.ArrayList;
 
+import com.ebstrada.aggregation.exception.FlagException;
 import com.ebstrada.aggregation.exception.InvalidRulePartException;
 import com.ebstrada.aggregation.exception.NoMatchException;
-import com.ebstrada.aggregation.exception.FlagException;
 
 @SuppressWarnings("serial")
 public class Rule extends ArrayList<RulePart> {
