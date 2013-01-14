@@ -17,7 +17,10 @@ public class AndCondition {
 	for (String selectionValue: selectionValues) {
 	    boolean match = false;
 	    for (String conditionValue: conditionValues) {
-		if (conditionValue.startsWith("!")) {
+		if (checkConditionValueForFlag(conditionValue, selectionValue)) {
+		    match = true;
+		    break;
+		} else if (conditionValue.startsWith("!")) {
 		    if (!(selectionValue.equalsIgnoreCase(conditionValue.replaceFirst("!", "")))) {
 			match = true;
 			break;
@@ -34,6 +37,18 @@ public class AndCondition {
 	    }
 	}
 	return true;
+    }
+
+    private boolean checkConditionValueForFlag(String conditionValue,
+	    String selectionValue) throws FlagException {
+	
+	if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) {
+	    if (conditionValue.equalsIgnoreCase("!!blank!!") && (selectionValue == null || selectionValue.trim().length() <= 0)) {
+		return true;
+	    }
+	}
+	
+	return false;
     }
 
 }
