@@ -177,7 +177,7 @@ public class AggregationTest {
 	aggregation.setRule(rule);
 	aggregation.setSelection(new Selection(new String[]{"B"}));
 	double score = aggregation.getAggregate();
-	Assert.assertEquals(0, score);
+	Assert.assertEquals(0.0d, score);
     }
     
 }
