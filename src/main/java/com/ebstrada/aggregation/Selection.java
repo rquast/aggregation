@@ -7,7 +7,9 @@ import java.util.Arrays;
 public class Selection extends ArrayList<String> {
 
     public Selection(String[] selection) {
-	addAll(Arrays.asList(selection));
+	if ( selection != null ) {
+	    addAll(Arrays.asList(selection));
+	}
     }
 
 }

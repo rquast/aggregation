@@ -19,11 +19,11 @@ public class OrCondition extends ArrayList<AndCondition> {
 
     public boolean match(Selection selection) throws FlagException {
 	for (AndCondition andConditionValue: andConditions) {
-	    if ( andConditionValue.match(selection) == false ) {
-		return false;
+	    if (andConditionValue.match(selection)) {
+		return true;
 	    }
 	}
-	return true;
+	return false;
     }
     
 }

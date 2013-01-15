@@ -71,9 +71,19 @@ public class AggregationTest {
 	Rule rule = new Rule();
 	rule.parse("a?1:C|b,A|!!blank!!?-6:2");
 	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(new String[]{}));
+	aggregation.setSelection(new Selection(null));
 	double aggregate = aggregation.getAggregate();
 	Assert.assertEquals(-6.0d, aggregate);
+    }
+    
+    @Test
+    public void testComplexAggregate2() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("!!blank!!|a?1:0");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(null));
+	double aggregate = aggregation.getAggregate();
+	Assert.assertEquals(1.0d, aggregate);
     }
     
     @Test

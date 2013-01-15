@@ -30,9 +30,6 @@ public class RulePart extends ArrayList<OrCondition> {
     }
 
     public boolean match(Selection selection) throws FlagException {
-	if (size() <= 0) {
-	    return true;
-	}
 	for (OrCondition orCondition: this) {
 	    if (orCondition.match(selection)) {
 		return true;
