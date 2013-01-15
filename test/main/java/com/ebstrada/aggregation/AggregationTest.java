@@ -82,6 +82,26 @@ public class AggregationTest {
     }
     
     @Test
+    public void testUserSpecifiedFlagException3() throws Exception {
+	exception.expect(ErrorFlagException.class);
+	Rule rule = new Rule();
+	rule.parse("C,D?!!error!!:C?+1");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
+	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testUserSpecifiedFlagException4() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("C,D?!!error!!:C?+1");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"C"}));
+	double mark = aggregation.getAggregate();
+	Assert.assertEquals(1.0d, mark);
+    }
+    
+    @Test
     public void testAndOrCombinations1() throws Exception {
 	Rule rule = new Rule();
 	rule.parse("A,B?+1:B,C?+2:A,C|C,D?+3:+0");

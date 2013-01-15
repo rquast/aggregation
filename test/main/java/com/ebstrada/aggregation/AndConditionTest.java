@@ -91,4 +91,20 @@ public class AndConditionTest {
 	assertFalse(andCondition.match(selection));
     }
     
+    @Test
+    public void testSingleSelectionMultipleAnd() throws Exception {
+	AndCondition andCondition = new AndCondition();
+	Selection selection = new Selection(new String[]{"C"});
+	andCondition.parse("C,D");
+	assertFalse(andCondition.match(selection));
+    }
+    
+    @Test
+    public void testMultipleSelectionSingleAnd() throws Exception {
+	AndCondition andCondition = new AndCondition();
+	Selection selection = new Selection(new String[]{"C","D"});
+	andCondition.parse("D");
+	assertFalse(andCondition.match(selection));
+    }
+    
 }

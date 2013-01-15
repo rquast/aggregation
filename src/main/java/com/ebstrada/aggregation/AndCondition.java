@@ -43,7 +43,7 @@ public class AndCondition {
 	}
     }
     
-    private boolean checkConditionValue(String conditionValue, 
+    public boolean checkConditionValue(String conditionValue, 
 	    String selectionValue, int selectionCount) throws InvalidRulePartException {
 	if ( conditionValue.startsWith("!!!") && conditionValue.endsWith("!!") ) { // negated user flags
 	    if ( !checkConditionFlag(conditionValue.replaceFirst("!!!", "!!"), selectionValue) ) {
@@ -77,7 +77,7 @@ public class AndCondition {
 	return false;
     }
 
-    private boolean checkConditionFlag(String conditionValue,
+    public boolean checkConditionFlag(String conditionValue,
 	    String selectionValue) throws InvalidRulePartException {
 	String conditionName = conditionValue.substring(2, conditionValue.length() - 2).toLowerCase();
 	if (conditionName.equals(BLANK_CONDITION)) {
@@ -95,7 +95,7 @@ public class AndCondition {
 	return false;
     }
     
-    private int parseIntFunctionParameter(String conditionName) throws InvalidRulePartException {
+    public int parseIntFunctionParameter(String conditionName) throws InvalidRulePartException {
 	String intStr = conditionName.substring(conditionName.indexOf('(') + 1, conditionName.length() - 1);
 	try {
 	    return Integer.parseInt(intStr);
