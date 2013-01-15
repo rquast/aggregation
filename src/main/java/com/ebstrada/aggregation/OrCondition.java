@@ -2,7 +2,7 @@ package com.ebstrada.aggregation;
 
 import java.util.ArrayList;
 
-import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.ErrorFlagException;
 
 @SuppressWarnings("serial")
 public class OrCondition extends ArrayList<AndCondition> {
@@ -17,7 +17,7 @@ public class OrCondition extends ArrayList<AndCondition> {
 	}
     }
 
-    public boolean match(Selection selection) throws FlagException {
+    public boolean match(Selection selection) throws ErrorFlagException {
 	for (AndCondition andConditionValue: andConditions) {
 	    if (andConditionValue.match(selection)) {
 		return true;

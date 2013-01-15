@@ -1,14 +1,14 @@
 package com.ebstrada.aggregation;
 
-import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.ErrorFlagException;
 
 public class Result {
     
     private double score;
     
-    private FlagException flagException;
+    private ErrorFlagException flagException;
 
-    public double getScore() throws FlagException {
+    public double getScore() throws ErrorFlagException {
 	if ( this.flagException != null ) {
 	    throw this.flagException;
 	}
@@ -19,7 +19,7 @@ public class Result {
 	this.score = score;
     }
 
-    public void setException(FlagException flagException) {
+    public void setException(ErrorFlagException flagException) {
 	this.flagException = flagException;
     }
 

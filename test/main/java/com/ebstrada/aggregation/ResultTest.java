@@ -6,7 +6,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.ErrorFlagException;
 
 @RunWith(JUnit4.class)
 public class ResultTest {
@@ -21,9 +21,9 @@ public class ResultTest {
 
     @Test
     public void testUserSpecifiedFlagException() throws Exception {
-	exception.expect(FlagException.class);
+	exception.expect(ErrorFlagException.class);
 	Result result = new Result();
-	result.setException(new FlagException());
+	result.setException(new ErrorFlagException());
 	result.getScore();
     }
 }

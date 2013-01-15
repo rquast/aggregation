@@ -9,7 +9,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.ErrorFlagException;
 import com.ebstrada.aggregation.exception.NoMatchException;
 
 @RunWith(JUnit4.class)
@@ -63,7 +63,7 @@ public class AggregationTest {
     
     @Test
     public void testUserSpecifiedFlagException1() throws Exception {
-	exception.expect(FlagException.class);
+	exception.expect(ErrorFlagException.class);
 	Rule rule = new Rule();
 	rule.parse("a?+1:b?!!error!!:!!blank!!?-6:2");
 	aggregation.setRule(rule);
@@ -73,7 +73,7 @@ public class AggregationTest {
     
     @Test
     public void testUserSpecifiedFlagException2() throws Exception {
-	exception.expect(FlagException.class);
+	exception.expect(ErrorFlagException.class);
 	Rule rule = new Rule();
 	rule.parse("!!blank!!?!!error!!");
 	aggregation.setRule(rule);
@@ -133,7 +133,7 @@ public class AggregationTest {
     
     @Test
     public void testThrowFlagIfMoreThanOneSelected() throws Exception {
-	exception.expect(FlagException.class);
+	exception.expect(ErrorFlagException.class);
 	Rule rule = new Rule();
 	rule.parse("''?!!error!!:B?+1:0");
 	aggregation.setRule(rule);

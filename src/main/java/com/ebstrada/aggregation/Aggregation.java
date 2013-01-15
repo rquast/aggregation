@@ -1,6 +1,6 @@
 package com.ebstrada.aggregation;
 
-import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.ErrorFlagException;
 import com.ebstrada.aggregation.exception.NoMatchException;
 
 public class Aggregation {
@@ -16,7 +16,7 @@ public class Aggregation {
 	this.selection = selection;
     }
 
-    public double getAggregate() throws NoMatchException, FlagException {
+    public double getAggregate() throws NoMatchException, ErrorFlagException {
 	return rule.calculate(selection).getScore();
     }
 

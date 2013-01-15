@@ -2,7 +2,7 @@ package com.ebstrada.aggregation;
 
 import java.util.ArrayList;
 
-import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.ErrorFlagException;
 import com.ebstrada.aggregation.exception.InvalidRulePartException;
 
 @SuppressWarnings("serial")
@@ -29,7 +29,7 @@ public class RulePart extends ArrayList<OrCondition> {
 	this.result = parseScoreString(ruleStr);
     }
 
-    public boolean match(Selection selection) throws FlagException {
+    public boolean match(Selection selection) throws ErrorFlagException {
 	for (OrCondition orCondition: this) {
 	    if (orCondition.match(selection)) {
 		return true;
@@ -44,7 +44,7 @@ public class RulePart extends ArrayList<OrCondition> {
 	
 	if (isScoreValueAFlag(scoreString)) {
 	    Result res = new Result();
-	    res.setException(new FlagException());
+	    res.setException(new ErrorFlagException());
 	    return res;
 	}
 	

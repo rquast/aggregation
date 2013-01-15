@@ -3,7 +3,7 @@ package com.ebstrada.aggregation;
 import java.util.Arrays;
 import java.util.List;
 
-import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.ErrorFlagException;
 
 public class AndCondition {
     
@@ -15,7 +15,7 @@ public class AndCondition {
 	conditionValues = Arrays.asList(conditionStr.split("\\,"));
     }
 
-    public boolean match(Selection selectionValues) throws FlagException {
+    public boolean match(Selection selectionValues) {
 	if ( selectionValues == null || selectionValues.size() <= 0 ) {
 	    for (String conditionValue: conditionValues) {
 		if ( checkConditionValue(conditionValue, "", 0) ) {
@@ -41,8 +41,12 @@ public class AndCondition {
     }
     
     private boolean checkConditionValue(String conditionValue, 
-	    String selectionValue, int selectionCount) throws FlagException {
-	if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) { // user flags
+	    String selectionValue, int selectionCount) {
+	if ( conditionValue.startsWith("!!!") && conditionValue.endsWith("!!") ) { // negated user flags
+	    if ( !checkConditionFlag(conditionValue.replaceFirst("!!!", "!!"), selectionValue) ) {
+		return true;
+	    }
+	} else if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) { // user flags
 	    if ( checkConditionFlag(conditionValue, selectionValue) ) {
 		return true;
 	    }
@@ -71,7 +75,7 @@ public class AndCondition {
     }
 
     private boolean checkConditionFlag(String conditionValue,
-	    String selectionValue) throws FlagException {
+	    String selectionValue) {
 	if (conditionValue.equalsIgnoreCase(BLANK_CONDITION)) {
 	    if ( selectionValue == null || selectionValue.length() <= 0 ) {
 		return true;

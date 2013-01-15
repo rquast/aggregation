@@ -2,7 +2,7 @@ package com.ebstrada.aggregation;
 
 import java.util.ArrayList;
 
-import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.ErrorFlagException;
 import com.ebstrada.aggregation.exception.InvalidRulePartException;
 import com.ebstrada.aggregation.exception.NoMatchException;
 
@@ -35,7 +35,7 @@ public class Rule extends ArrayList<RulePart> {
 	
     }
     
-    public Result calculate(Selection selection) throws NoMatchException, FlagException {
+    public Result calculate(Selection selection) throws NoMatchException, ErrorFlagException {
 	for (RulePart rulePart: this) {
 	    if (rulePart.match(selection)) {
 		return rulePart.getResult();
