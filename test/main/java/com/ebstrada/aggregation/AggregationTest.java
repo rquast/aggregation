@@ -152,12 +152,32 @@ public class AggregationTest {
     }
     
     @Test
-    public void testThrowFlagIfStringLengthNotEqual() throws Exception {
+    public void testIfStringLengthNotEqual() throws Exception {
 	Rule rule = new Rule();
-	rule.parse("!!!strleneq(4)!!?!!error!!");
+	rule.parse("!!!strleneq(4)!!?!!error!!:4171?1");
 	aggregation.setRule(rule);
 	aggregation.setSelection(new Selection(new String[]{"4171"}));
 	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testStringNegationThrowErrorFlag() throws Exception {
+	exception.expect(ErrorFlagException.class);
+	Rule rule = new Rule();
+	rule.parse("!41711?!!error!!");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"4171"}));
+	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testDefaultRulePart() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("A?+1:0");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"B"}));
+	double score = aggregation.getAggregate();
+	Assert.assertEquals(0, score);
     }
     
 }
