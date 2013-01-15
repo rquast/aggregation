@@ -1,7 +1,5 @@
 package com.ebstrada.aggregation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -17,9 +15,6 @@ import com.ebstrada.aggregation.exception.FlagException;
 public class AggregationTest {
 
     private Aggregation aggregation;
-    private static final Rule DEFAULT_RULE = new Rule();
-    private static final Selection DEFAULT_SELECTION = new Selection(new String[]{"C"});
-    private static final double DEFAULT_AGGREGATE = -1.0d;
     
     @org.junit.Rule
     public ExpectedException exception = ExpectedException.none();
@@ -27,7 +22,6 @@ public class AggregationTest {
     @Before
     public void setUp() throws Exception {
 	aggregation = new Aggregation();
-	DEFAULT_RULE.parse("A?+1:B?+1:C?-1:+6");
     }
 
     @After
@@ -37,29 +31,9 @@ public class AggregationTest {
     }
     
     @Test
-    public void testGetSetRule() {
-	aggregation.setRule(DEFAULT_RULE);
-	assertEquals(DEFAULT_RULE, aggregation.getRule());
-    }
-    
-    @Test
-    public void testGetSetSelection() {
-	aggregation.setSelection(DEFAULT_SELECTION);
-	assertSame(DEFAULT_SELECTION, aggregation.getSelection());
-    }
-
-    @Test
     public void testDefaultAggregate() throws Exception {
-	aggregation.setRule(DEFAULT_RULE);
-	aggregation.setSelection(DEFAULT_SELECTION);
-	double aggregate = aggregation.getAggregate();
-	Assert.assertEquals(DEFAULT_AGGREGATE, aggregate);
-    }
-    
-    @Test
-    public void testDefaultAggregate2() throws Exception {
 	Rule rule = new Rule();
-	rule.parse("a?1:0");
+	rule.parse("A?+1");
 	aggregation.setRule(rule);
 	aggregation.setSelection(new Selection(new String[]{"A"}));
 	double aggregate = aggregation.getAggregate();
@@ -87,13 +61,33 @@ public class AggregationTest {
     }
     
     @Test
-    public void testUserSpecifiedFlagException() throws Exception {
+    public void testUserSpecifiedFlagException1() throws Exception {
 	exception.expect(FlagException.class);
 	Rule rule = new Rule();
 	rule.parse("a?+1:b?!!error!!:!!blank!!?-6:2");
 	aggregation.setRule(rule);
 	aggregation.setSelection(new Selection(new String[]{"B"}));
 	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testUserSpecifiedFlagException2() throws Exception {
+	exception.expect(FlagException.class);
+	Rule rule = new Rule();
+	rule.parse("!!blank!!?!!error!!");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(null));
+	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testAndOrCombinations1() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("A,B?+1:B,C?+2:A,C|C,D?+3:+0");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
+	double aggregate = aggregation.getAggregate();
+	Assert.assertEquals(3.0d, aggregate);
     }
 
 }
