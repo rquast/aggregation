@@ -18,7 +18,7 @@ public class AndCondition {
     public boolean match(Selection selectionValues) throws FlagException {
 	if ( selectionValues == null || selectionValues.size() <= 0 ) {
 	    for (String conditionValue: conditionValues) {
-		if ( checkConditionValue(conditionValue, "") ) {
+		if ( checkConditionValue(conditionValue, "", 0) ) {
 		    return true;
 		}
 	    }
@@ -27,7 +27,7 @@ public class AndCondition {
 	    for (String selectionValue: selectionValues) {
 		boolean match = false;
 		for (String conditionValue: conditionValues) {
-		    if ( checkConditionValue(conditionValue, selectionValue) ) {
+		    if ( checkConditionValue(conditionValue, selectionValue, selectionValues.size()) ) {
 			match = true;
 			break;
 		    }
@@ -41,16 +41,28 @@ public class AndCondition {
     }
     
     private boolean checkConditionValue(String conditionValue, 
-	    String selectionValue) throws FlagException {
-	if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) {
+	    String selectionValue, int selectionCount) throws FlagException {
+	if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) { // user flags
 	    if ( checkConditionFlag(conditionValue, selectionValue) ) {
 		return true;
 	    }
-	} else if (conditionValue.startsWith("!")) {
+	} else if (conditionValue.startsWith("!")) { // negations
 	    if (!(selectionValue.equalsIgnoreCase(conditionValue.replaceFirst("!", "")))) {
 		return true;
 	    }
-	} else {
+	} else if (conditionValue.startsWith("'")) { // wildcards
+	    int partCount = 0;
+	    for (int i = 0; i < conditionValue.length(); ++i) {
+		if (conditionValue.charAt(i) == '\'') {
+		    ++partCount;
+		}
+	    }
+	    if (partCount > 0) {
+		if (selectionCount >= partCount) {
+		    return true;
+		}
+	    }
+	} else { // standard match
 	    if (selectionValue.equalsIgnoreCase(conditionValue)) {
 		return true;
 	    }
