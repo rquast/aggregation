@@ -141,4 +141,23 @@ public class AggregationTest {
 	aggregation.getAggregate();
     }
     
+    @Test
+    public void testIfStringLengthEqual() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("!!strleneq(4)!!?1:0");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"4171"}));
+	double aggregate = aggregation.getAggregate();
+	Assert.assertEquals(1.0d, aggregate);
+    }
+    
+    @Test
+    public void testThrowFlagIfStringLengthNotEqual() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("!!!strleneq(4)!!?!!error!!");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"4171"}));
+	aggregation.getAggregate();
+    }
+    
 }

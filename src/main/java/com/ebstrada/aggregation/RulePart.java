@@ -29,7 +29,7 @@ public class RulePart extends ArrayList<OrCondition> {
 	this.result = parseScoreString(ruleStr);
     }
 
-    public boolean match(Selection selection) throws ErrorFlagException {
+    public boolean match(Selection selection) throws ErrorFlagException, InvalidRulePartException {
 	for (OrCondition orCondition: this) {
 	    if (orCondition.match(selection)) {
 		return true;

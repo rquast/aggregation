@@ -35,7 +35,7 @@ public class Rule extends ArrayList<RulePart> {
 	
     }
     
-    public Result calculate(Selection selection) throws NoMatchException, ErrorFlagException {
+    public Result calculate(Selection selection) throws NoMatchException, ErrorFlagException, InvalidRulePartException {
 	for (RulePart rulePart: this) {
 	    if (rulePart.match(selection)) {
 		return rulePart.getResult();

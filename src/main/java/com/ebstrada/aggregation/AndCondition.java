@@ -4,10 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.ebstrada.aggregation.exception.ErrorFlagException;
+import com.ebstrada.aggregation.exception.InvalidRulePartException;
 
 public class AndCondition {
     
-    private static final String BLANK_CONDITION = "!!blank!!";
+    private static final String BLANK_CONDITION = "blank";
+    
+    private static final String STRING_LENGTH_EQUALS_FUNCTION_NAME = "strleneq";
 
     private List<String> conditionValues;
     
@@ -15,7 +18,7 @@ public class AndCondition {
 	conditionValues = Arrays.asList(conditionStr.split("\\,"));
     }
 
-    public boolean match(Selection selectionValues) {
+    public boolean match(Selection selectionValues) throws InvalidRulePartException {
 	if ( selectionValues == null || selectionValues.size() <= 0 ) {
 	    for (String conditionValue: conditionValues) {
 		if ( checkConditionValue(conditionValue, "", 0) ) {
@@ -41,7 +44,7 @@ public class AndCondition {
     }
     
     private boolean checkConditionValue(String conditionValue, 
-	    String selectionValue, int selectionCount) {
+	    String selectionValue, int selectionCount) throws InvalidRulePartException {
 	if ( conditionValue.startsWith("!!!") && conditionValue.endsWith("!!") ) { // negated user flags
 	    if ( !checkConditionFlag(conditionValue.replaceFirst("!!!", "!!"), selectionValue) ) {
 		return true;
@@ -75,13 +78,30 @@ public class AndCondition {
     }
 
     private boolean checkConditionFlag(String conditionValue,
-	    String selectionValue) {
-	if (conditionValue.equalsIgnoreCase(BLANK_CONDITION)) {
+	    String selectionValue) throws InvalidRulePartException {
+	String conditionName = conditionValue.substring(2, conditionValue.length() - 2).toLowerCase();
+	if (conditionName.equals(BLANK_CONDITION)) {
 	    if ( selectionValue == null || selectionValue.length() <= 0 ) {
 		return true;
 	    }
+	} else if (conditionName.startsWith(STRING_LENGTH_EQUALS_FUNCTION_NAME)) {
+	    int stringLength = parseIntFunctionParameter(conditionName);
+	    if (stringLength == selectionValue.length()) {
+		return true;
+	    }
+	} else {
+	    throw new InvalidRulePartException();
 	}
 	return false;
+    }
+    
+    private int parseIntFunctionParameter(String conditionName) throws InvalidRulePartException {
+	String intStr = conditionName.substring(conditionName.indexOf('(') + 1, conditionName.length() - 1);
+	try {
+	    return Integer.parseInt(intStr);
+	} catch (Exception ex) {
+	    throw new InvalidRulePartException(ex);
+	}
     }
 
 }

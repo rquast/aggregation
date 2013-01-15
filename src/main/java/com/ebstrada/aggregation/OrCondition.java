@@ -3,6 +3,7 @@ package com.ebstrada.aggregation;
 import java.util.ArrayList;
 
 import com.ebstrada.aggregation.exception.ErrorFlagException;
+import com.ebstrada.aggregation.exception.InvalidRulePartException;
 
 @SuppressWarnings("serial")
 public class OrCondition extends ArrayList<AndCondition> {
@@ -17,7 +18,7 @@ public class OrCondition extends ArrayList<AndCondition> {
 	}
     }
 
-    public boolean match(Selection selection) throws ErrorFlagException {
+    public boolean match(Selection selection) throws ErrorFlagException, InvalidRulePartException {
 	for (AndCondition andConditionValue: andConditions) {
 	    if (andConditionValue.match(selection)) {
 		return true;
