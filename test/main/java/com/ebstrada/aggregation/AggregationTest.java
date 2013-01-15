@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.ebstrada.aggregation.exception.FlagException;
+import com.ebstrada.aggregation.exception.NoMatchException;
 
 @RunWith(JUnit4.class)
 public class AggregationTest {
@@ -99,5 +100,45 @@ public class AggregationTest {
 	double aggregate = aggregation.getAggregate();
 	Assert.assertEquals(2.0d, aggregate);
     }
+    
+    @Test
+    public void testWildCards2() throws Exception {
+	exception.expect(NoMatchException.class);
+	Rule rule = new Rule();
+	rule.parse("'''?+3");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
+	aggregation.getAggregate();
+    }
 
+    @Test
+    public void testWildCards3() throws Exception {
+	exception.expect(NoMatchException.class);
+	Rule rule = new Rule();
+	rule.parse("'''?+3");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(null));
+	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testWildCards4() throws Exception {
+	exception.expect(NoMatchException.class);
+	Rule rule = new Rule();
+	rule.parse("'?+3");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{}));
+	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testThrowFlagIfMoreThanOneSelected() throws Exception {
+	exception.expect(FlagException.class);
+	Rule rule = new Rule();
+	rule.parse("''?!!error!!:B?+1:0");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"A", "B"}));
+	aggregation.getAggregate();
+    }
+    
 }
