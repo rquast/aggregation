@@ -89,5 +89,15 @@ public class AggregationTest {
 	double aggregate = aggregation.getAggregate();
 	Assert.assertEquals(3.0d, aggregate);
     }
+    
+    @Test
+    public void testWildCards1() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("'''?+3:''?+2:C,D?+3:+0");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
+	double aggregate = aggregation.getAggregate();
+	Assert.assertEquals(2.0d, aggregate);
+    }
 
 }
