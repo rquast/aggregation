@@ -78,8 +78,8 @@ public class AndConditionTest {
     @Test
     public void testTrueAndNegationTrue() throws Exception {
 	AndCondition andCondition = new AndCondition();
-	Selection selection = new Selection(new String[]{"B", "A", "D"});
-	andCondition.parse("B,!CA");
+	Selection selection = new Selection(new String[]{"A", "D"});
+	andCondition.parse("A,D");
 	assertTrue(andCondition.match(selection));
     }
     

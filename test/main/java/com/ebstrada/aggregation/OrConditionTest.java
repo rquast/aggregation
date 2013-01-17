@@ -22,7 +22,7 @@ public class OrConditionTest {
     }
     
     @Test
-    public void testParseComplex() {
+    public void testParseComplex() throws Exception {
 	orCondition.parse("A,B,C|B,A|!C");
     }
 

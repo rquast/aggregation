@@ -1,107 +1,74 @@
 package com.ebstrada.aggregation;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
-import com.ebstrada.aggregation.exception.ErrorFlagException;
 import com.ebstrada.aggregation.exception.InvalidRulePartException;
 
 public class AndCondition {
     
-    private static final String BLANK_CONDITION = "blank";
+    private ArrayList<IConditionPart> values = new ArrayList<IConditionPart>();
     
-    private static final String STRING_LENGTH_EQUALS_FUNCTION_NAME = "strleneq";
-
-    private List<String> conditionValues;
+    private ArrayList<IConditionPart> wildcards = new ArrayList<IConditionPart>();
     
-    public void parse(String conditionStr) {
-	conditionValues = Arrays.asList(conditionStr.split("\\,"));
+    private ArrayList<IConditionPart> negations = new ArrayList<IConditionPart>();
+    
+    private ArrayList<IConditionPart> functions = new ArrayList<IConditionPart>();
+    
+    public void parse(String conditionStr) throws InvalidRulePartException {
+	String[] conditionParts = conditionStr.split("\\,");
+	
+	for ( String conditionPart: conditionParts ) {
+	    IConditionPart conditionPartObj = ConditionPartFactory.getConditionPart(conditionPart);
+	    if ( conditionPartObj instanceof Value ) {
+		if ( conditionPartObj.isNegated() ) {
+		    negations.add(conditionPartObj);
+		} else {
+		    values.add(conditionPartObj);
+		}
+	    } else if ( conditionPartObj instanceof AbstractFunction ) {
+		functions.add(conditionPartObj);
+	    } else if ( conditionPartObj instanceof Wildcard ) {
+		wildcards.add(conditionPartObj);
+	    }
+	}
+	
     }
 
-    public boolean match(Selection selectionValues) throws InvalidRulePartException {
-	if ( selectionValues == null || selectionValues.size() <= 0 ) {
-	    for (String conditionValue: conditionValues) {
-		if ( checkConditionValue(conditionValue, "", 0) ) {
-		    return true;
-		}
+    public boolean match(Selection selectionValues) {
+
+	// check functions first
+	for ( IConditionPart function: functions ) {
+	    if ( function.match(selectionValues) == false ) {
+		return false;
 	    }
+	}
+	
+	// check negations second
+	for ( IConditionPart negation: negations ) {
+	    if ( negation.match(selectionValues) == false ) {
+		return false;
+	    }
+	}
+	
+	// check wildcards third
+	for ( IConditionPart wildcard: wildcards ) {
+	    if ( wildcard.match(selectionValues) == false ) {
+		return false;
+	    }
+	}
+	
+	// check values third
+	for ( IConditionPart value: values ) {
+	    if ( value.match(selectionValues) == false ) {
+		return false;
+	    }
+	}
+	if ( selectionValues.size() != values.size() ) {
 	    return false;
-	} else {
-	    for (String selectionValue: selectionValues) {
-		boolean match = false;
-		for (String conditionValue: conditionValues) {
-		    if ( checkConditionValue(conditionValue, selectionValue, selectionValues.size()) ) {
-			match = true;
-			break;
-		    }
-		}
-		if ( match == false ) {
-		    return false;
-		}
-	    }
-	    return true;
 	}
-    }
-    
-    public boolean checkConditionValue(String conditionValue, 
-	    String selectionValue, int selectionCount) throws InvalidRulePartException {
-	if ( conditionValue.startsWith("!!!") && conditionValue.endsWith("!!") ) { // negated user flags
-	    if ( !checkConditionFlag(conditionValue.replaceFirst("!!!", "!!"), selectionValue) ) {
-		return true;
-	    }
-	} else if ( conditionValue.startsWith("!!") && conditionValue.endsWith("!!") ) { // user flags
-	    if ( checkConditionFlag(conditionValue, selectionValue) ) {
-		return true;
-	    }
-	} else if (conditionValue.startsWith("!")) { // negations
-	    if (!(selectionValue.equalsIgnoreCase(conditionValue.replaceFirst("!", "")))) {
-		return true;
-	    }
-	} else if (conditionValue.startsWith("'")) { // wildcards
-	    int partCount = 0;
-	    for (int i = 0; i < conditionValue.length(); ++i) {
-		if (conditionValue.charAt(i) == '\'') {
-		    ++partCount;
-		}
-	    }
-	    if (partCount > 0) {
-		if (selectionCount >= partCount) {
-		    return true;
-		}
-	    }
-	} else { // standard match
-	    if (selectionValue.equalsIgnoreCase(conditionValue)) {
-		return true;
-	    }
-	}
-	return false;
-    }
+	
+	return true;
 
-    public boolean checkConditionFlag(String conditionValue,
-	    String selectionValue) throws InvalidRulePartException {
-	String conditionName = conditionValue.substring(2, conditionValue.length() - 2).toLowerCase();
-	if (conditionName.equals(BLANK_CONDITION)) {
-	    if ( selectionValue == null || selectionValue.length() <= 0 ) {
-		return true;
-	    }
-	} else if (conditionName.startsWith(STRING_LENGTH_EQUALS_FUNCTION_NAME)) {
-	    int stringLength = parseIntFunctionParameter(conditionName);
-	    if (stringLength == selectionValue.length()) {
-		return true;
-	    }
-	} else {
-	    throw new InvalidRulePartException();
-	}
-	return false;
-    }
-    
-    public int parseIntFunctionParameter(String conditionName) throws InvalidRulePartException {
-	String intStr = conditionName.substring(conditionName.indexOf('(') + 1, conditionName.length() - 1);
-	try {
-	    return Integer.parseInt(intStr);
-	} catch (Exception ex) {
-	    throw new InvalidRulePartException(ex);
-	}
     }
 
 }

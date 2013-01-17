@@ -10,17 +10,17 @@ public class OrCondition extends ArrayList<AndCondition> {
     
     private ArrayList<AndCondition> andConditions = new ArrayList<AndCondition>();
 
-    public void parse(String conditionStr) {
-	for (String andValue: conditionStr.split("\\|")) {
-	    AndCondition conditionValue = new AndCondition();
-	    conditionValue.parse(andValue);
-	    andConditions.add(conditionValue);
+    public void parse(String conditionStr) throws InvalidRulePartException {
+	for (String andConditionStr: conditionStr.split("\\|")) {
+	    AndCondition andCondition = new AndCondition();
+	    andCondition.parse(andConditionStr);
+	    andConditions.add(andCondition);
 	}
     }
 
     public boolean match(Selection selection) throws ErrorFlagException, InvalidRulePartException {
-	for (AndCondition andConditionValue: andConditions) {
-	    if (andConditionValue.match(selection)) {
+	for (AndCondition andCondition: andConditions) {
+	    if (andCondition.match(selection)) {
 		return true;
 	    }
 	}
