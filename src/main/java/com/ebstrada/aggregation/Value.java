@@ -33,10 +33,12 @@ public class Value implements IConditionPart {
     @Override
     public boolean match(Selection selectionValues) {
 	for (String selectionValue: selectionValues) {
-	    if (value.trim().toLowerCase() == selectionValue.trim()) {
-		if ( negated ) {
-		    return false;
-		} else {
+	    if ( negated ) {
+		if (value.equalsIgnoreCase(selectionValue.trim()) == false) {
+		    return true;
+		}
+	    } else {
+		if (value.equalsIgnoreCase(selectionValue.trim()) == true) {
 		    return true;
 		}
 	    }

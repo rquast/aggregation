@@ -63,9 +63,11 @@ public class AndCondition {
 		return false;
 	    }
 	}
-	if ( selectionValues.size() != values.size() ) {
+	/*
+	if ( selectionValues.size() < values.size() ) {
 	    return false;
 	}
+	*/
 	
 	return true;
 
