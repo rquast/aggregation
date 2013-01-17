@@ -16,7 +16,6 @@ public class AndCondition {
     
     public void parse(String conditionStr) throws InvalidRulePartException {
 	String[] conditionParts = conditionStr.split("\\,");
-	
 	for ( String conditionPart: conditionParts ) {
 	    IConditionPart conditionPartObj = ConditionPartFactory.getConditionPart(conditionPart);
 	    if ( conditionPartObj instanceof Value ) {
@@ -31,46 +30,40 @@ public class AndCondition {
 		wildcards.add(conditionPartObj);
 	    }
 	}
-	
+    }
+    
+    public boolean matchNonValues(Selection selectionValues) {
+	for (IConditionPart function: functions) {
+	    if (function.match(selectionValues) == false) {
+		return false;
+	    }
+	}
+	for (IConditionPart negation: negations) {
+	    if (negation.match(selectionValues) == false) {
+		return false;
+	    }
+	}
+	for (IConditionPart wildcard: wildcards) {
+	    if (wildcard.match(selectionValues) == false) {
+		return false;
+	    }
+	}
+	return true;
     }
 
     public boolean match(Selection selectionValues) {
-
-	// check functions first
-	for ( IConditionPart function: functions ) {
-	    if ( function.match(selectionValues) == false ) {
-		return false;
+	if (values.size() == selectionValues.size()) {
+	    for (IConditionPart value: values) {
+		if (value.match(selectionValues) == false) {
+		    return false;
+		}
 	    }
-	}
-	
-	// check negations second
-	for ( IConditionPart negation: negations ) {
-	    if ( negation.match(selectionValues) == false ) {
-		return false;
-	    }
-	}
-	
-	// check wildcards third
-	for ( IConditionPart wildcard: wildcards ) {
-	    if ( wildcard.match(selectionValues) == false ) {
-		return false;
-	    }
-	}
-	
-	// check values third
-	for ( IConditionPart value: values ) {
-	    if ( value.match(selectionValues) == false ) {
-		return false;
-	    }
-	}
-	/*
-	if ( selectionValues.size() < values.size() ) {
+	    return matchNonValues(selectionValues);
+	} else if (wildcards.size() > 0 || negations.size() > 0 || functions.size() > 0) {
+	    return matchNonValues(selectionValues);
+	} else {
 	    return false;
 	}
-	*/
-	
-	return true;
-
     }
 
 }
