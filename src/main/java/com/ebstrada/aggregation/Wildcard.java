@@ -33,7 +33,6 @@ public class Wildcard implements IConditionPart {
 
     @Override
     public void parse(String conditionPartStr) throws InvalidRulePartException {
-	conditionPartStr = conditionPartStr.trim();
 	for (int i = 0; i < conditionPartStr.length(); ++i) {
 	    if (conditionPartStr.charAt(i) == '\'') {
 		++count;

@@ -11,7 +11,6 @@ public class Value implements IConditionPart {
     }
 
     public void parse(String conditionPartStr) {
-	conditionPartStr = conditionPartStr.trim();
 	if (conditionPartStr.startsWith("!")) {
 	    this.negated = true;
 	    this.value = conditionPartStr.replaceFirst("!", "");

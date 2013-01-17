@@ -5,12 +5,16 @@ import com.ebstrada.aggregation.exception.InvalidRulePartException;
 public class ConditionPartFactory {
 
     public static IConditionPart getConditionPart(String conditionPartStr) throws InvalidRulePartException {
-	String str = conditionPartStr.trim();
-	if ((str.startsWith("!!!") || str.startsWith("!!")) && str.endsWith("!!")) {
-	    return FunctionFactory.getFunction(str);
+	conditionPartStr = conditionPartStr.trim();
+	if ((conditionPartStr.startsWith("!!!") || conditionPartStr.startsWith("!!")) && conditionPartStr.endsWith("!!")) {
+	    return FunctionFactory.getFunction(conditionPartStr);
+	} else if ( conditionPartStr.startsWith("'") ) {
+	    Wildcard wildcard = new Wildcard();
+	    wildcard.parse(conditionPartStr);
+	    return wildcard;
 	} else {
 	    Value value = new Value();
-	    value.parse(str);
+	    value.parse(conditionPartStr);
 	    return value;
 	}
     }
