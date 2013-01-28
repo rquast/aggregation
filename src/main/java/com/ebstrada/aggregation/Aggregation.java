@@ -9,14 +9,6 @@ public class Aggregation {
     private Rule rule;
     private Selection selection;
     
-    public void setRule(Rule rule) {
-	this.rule = rule;
-    }
-
-    public void setSelection(Selection selection) {
-	this.selection = selection;
-    }
-
     public double getAggregate() throws NoMatchException, ErrorFlagException, InvalidRulePartException {
 	return rule.calculate(selection).getScore();
     }
@@ -27,6 +19,14 @@ public class Aggregation {
 
     public Selection getSelection() {
 	return this.selection;
+    }
+
+    public void setRule(Rule rule) {
+	this.rule = rule;
+    }
+
+    public void setSelection(Selection selection) {
+	this.selection = selection;
     }
 
 }

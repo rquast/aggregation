@@ -4,15 +4,7 @@ import com.ebstrada.aggregation.exception.InvalidRulePartException;
 
 public class FunctionStrLenEq extends AbstractFunction {
     
-    private String conditionName;
-    
     private int stringLength;
-
-    public void parse(String conditionPartStr) throws InvalidRulePartException {
-	conditionPartStr = conditionPartStr.trim();
-	this.conditionName = conditionPartStr.substring(0, conditionPartStr.indexOf('('));
-	this.stringLength = parseIntFunctionParameter(conditionPartStr);
-    }
 
     @Override
     public boolean match(Selection selectionValues) {
@@ -24,6 +16,12 @@ public class FunctionStrLenEq extends AbstractFunction {
 	} else {
 	    return negated ? true: false;
 	}
+    }
+
+    @Override
+    public void parse(String conditionPartStr) throws InvalidRulePartException {
+	conditionPartStr = conditionPartStr.trim();
+	this.stringLength = parseIntFunctionParameter(conditionPartStr);
     }
 
 }

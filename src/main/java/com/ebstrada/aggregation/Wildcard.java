@@ -14,11 +14,6 @@ public class Wildcard implements IConditionPart {
     }
 
     @Override
-    public void setNegated(boolean negated) {
-	this.negated = negated;
-    }
-
-    @Override
     public boolean match(Selection selectionValues) {
 	boolean result = false;
 	if (selectionValues.size() >= this.count) {
@@ -38,6 +33,11 @@ public class Wildcard implements IConditionPart {
 		++count;
 	    }
 	}
+    }
+
+    @Override
+    public void setNegated(boolean negated) {
+	this.negated = negated;
     }
 
 }

@@ -14,21 +14,18 @@ public class AndCondition {
     
     private ArrayList<IConditionPart> functions = new ArrayList<IConditionPart>();
     
-    public void parse(String conditionStr) throws InvalidRulePartException {
-	String[] conditionParts = conditionStr.split("\\,");
-	for ( String conditionPart: conditionParts ) {
-	    IConditionPart conditionPartObj = ConditionPartFactory.getConditionPart(conditionPart);
-	    if ( conditionPartObj instanceof Value ) {
-		if ( conditionPartObj.isNegated() ) {
-		    negations.add(conditionPartObj);
-		} else {
-		    values.add(conditionPartObj);
+    public boolean match(Selection selectionValues) {
+	if (values.size() == selectionValues.size()) {
+	    for (IConditionPart value: values) {
+		if (value.match(selectionValues) == false) {
+		    return false;
 		}
-	    } else if ( conditionPartObj instanceof AbstractFunction ) {
-		functions.add(conditionPartObj);
-	    } else if ( conditionPartObj instanceof Wildcard ) {
-		wildcards.add(conditionPartObj);
 	    }
+	    return matchNonValues(selectionValues);
+	} else if (wildcards.size() > 0 || negations.size() > 0 || functions.size() > 0) {
+	    return matchNonValues(selectionValues);
+	} else {
+	    return false;
 	}
     }
     
@@ -51,18 +48,21 @@ public class AndCondition {
 	return true;
     }
 
-    public boolean match(Selection selectionValues) {
-	if (values.size() == selectionValues.size()) {
-	    for (IConditionPart value: values) {
-		if (value.match(selectionValues) == false) {
-		    return false;
+    public void parse(String conditionStr) throws InvalidRulePartException {
+	String[] conditionParts = conditionStr.split("\\,");
+	for ( String conditionPart: conditionParts ) {
+	    IConditionPart conditionPartObj = ConditionPartFactory.getConditionPart(conditionPart);
+	    if ( conditionPartObj instanceof Value ) {
+		if ( conditionPartObj.isNegated() ) {
+		    negations.add(conditionPartObj);
+		} else {
+		    values.add(conditionPartObj);
 		}
+	    } else if ( conditionPartObj instanceof AbstractFunction ) {
+		functions.add(conditionPartObj);
+	    } else if ( conditionPartObj instanceof Wildcard ) {
+		wildcards.add(conditionPartObj);
 	    }
-	    return matchNonValues(selectionValues);
-	} else if (wildcards.size() > 0 || negations.size() > 0 || functions.size() > 0) {
-	    return matchNonValues(selectionValues);
-	} else {
-	    return false;
 	}
     }
 

@@ -13,6 +13,7 @@ public class InvalidRulePartException extends Exception {
 	super(ex);
     }
     
+    @Override
     public String getMessage() {
 	return Localizer.localize("InvalidRulePartExceptionMessage");
     }

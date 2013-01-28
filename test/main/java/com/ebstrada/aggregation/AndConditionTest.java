@@ -21,17 +21,11 @@ public class AndConditionTest {
     }
     
     @Test
-    public void testParse1() throws Exception {
+    public void testCheckConditionValueForFlag() throws Exception {
 	AndCondition andCondition = new AndCondition();
-	andCondition.parse("!C");
-    }
-    
-    @Test
-    public void testMatchTrue1() throws Exception {
-	AndCondition andCondition = new AndCondition();
-	Selection selection = new Selection(new String[]{"A"});
-	andCondition.parse("A");
-	assertTrue(andCondition.match(selection));
+	Selection selection = new Selection(new String[]{"B"});
+	andCondition.parse("!!blank!!");
+	assertFalse(andCondition.match(selection));
     }
     
     @Test
@@ -58,13 +52,20 @@ public class AndConditionTest {
 	assertFalse(andCondition.match(selection));
     }
     
-    // test for negations
     @Test
-    public void testNegationIsTrue() throws Exception {
+    public void testMatchTrue1() throws Exception {
 	AndCondition andCondition = new AndCondition();
-	Selection selection = new Selection(new String[]{"B"});
-	andCondition.parse("!A");
+	Selection selection = new Selection(new String[]{"A"});
+	andCondition.parse("A");
 	assertTrue(andCondition.match(selection));
+    }
+    
+    @Test
+    public void testMultipleSelectionSingleAnd() throws Exception {
+	AndCondition andCondition = new AndCondition();
+	Selection selection = new Selection(new String[]{"C","D"});
+	andCondition.parse("D");
+	assertFalse(andCondition.match(selection));
     }
     
     @Test
@@ -75,20 +76,19 @@ public class AndConditionTest {
 	assertFalse(andCondition.match(selection));
     }
     
+    // test for negations
     @Test
-    public void testTrueAndNegationTrue() throws Exception {
+    public void testNegationIsTrue() throws Exception {
 	AndCondition andCondition = new AndCondition();
-	Selection selection = new Selection(new String[]{"A", "D"});
-	andCondition.parse("A,D");
+	Selection selection = new Selection(new String[]{"B"});
+	andCondition.parse("!A");
 	assertTrue(andCondition.match(selection));
     }
     
     @Test
-    public void testCheckConditionValueForFlag() throws Exception {
+    public void testParse1() throws Exception {
 	AndCondition andCondition = new AndCondition();
-	Selection selection = new Selection(new String[]{"B"});
-	andCondition.parse("!!blank!!");
-	assertFalse(andCondition.match(selection));
+	andCondition.parse("!C");
     }
     
     @Test
@@ -100,11 +100,11 @@ public class AndConditionTest {
     }
     
     @Test
-    public void testMultipleSelectionSingleAnd() throws Exception {
+    public void testTrueAndNegationTrue() throws Exception {
 	AndCondition andCondition = new AndCondition();
-	Selection selection = new Selection(new String[]{"C","D"});
-	andCondition.parse("D");
-	assertFalse(andCondition.match(selection));
+	Selection selection = new Selection(new String[]{"A", "D"});
+	andCondition.parse("A,D");
+	assertTrue(andCondition.match(selection));
     }
     
 }

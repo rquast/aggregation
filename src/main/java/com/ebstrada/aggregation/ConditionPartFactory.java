@@ -8,7 +8,7 @@ public class ConditionPartFactory {
 	conditionPartStr = conditionPartStr.trim();
 	if ((conditionPartStr.startsWith("!!!") || conditionPartStr.startsWith("!!")) && conditionPartStr.endsWith("!!")) {
 	    return FunctionFactory.getFunction(conditionPartStr);
-	} else if ( conditionPartStr.startsWith("'") ) {
+	} else if (conditionPartStr.startsWith("'")) {
 	    Wildcard wildcard = new Wildcard();
 	    wildcard.parse(conditionPartStr);
 	    return wildcard;

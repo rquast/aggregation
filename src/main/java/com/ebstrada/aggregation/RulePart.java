@@ -10,6 +10,26 @@ public class RulePart extends ArrayList<OrCondition> {
 
     private Result result;
     
+    public Result getResult() {
+	return this.result;
+    }
+
+    private boolean isScoreValueAFlag(String scoreValue) {
+	if (scoreValue.trim().equalsIgnoreCase("!!error!!")) {
+	    return true;
+	}
+	return false;
+    }
+    
+    public boolean match(Selection selection) throws ErrorFlagException, InvalidRulePartException {
+	for (OrCondition orCondition: this) {
+	    if (orCondition.match(selection)) {
+		return true;
+	    } 
+	}
+	return false;
+    }
+    
     public void parse(String ruleStr) throws InvalidRulePartException {
 	clear();
 	if (ruleStr.trim().equals("?")) {
@@ -27,15 +47,6 @@ public class RulePart extends ArrayList<OrCondition> {
 	    add(orCondition);
 	}
 	this.result = parseScoreString(ruleStr);
-    }
-
-    public boolean match(Selection selection) throws ErrorFlagException, InvalidRulePartException {
-	for (OrCondition orCondition: this) {
-	    if (orCondition.match(selection)) {
-		return true;
-	    } 
-	}
-	return false;
     }
     
     private Result parseScoreString(String string) throws InvalidRulePartException {
@@ -58,17 +69,6 @@ public class RulePart extends ArrayList<OrCondition> {
 	Result res = new Result();
 	res.setScore(score);
 	return res;
-    }
-    
-    private boolean isScoreValueAFlag(String scoreValue) {
-	if (scoreValue.trim().equalsIgnoreCase("!!error!!")) {
-	    return true;
-	}
-	return false;
-    }
-    
-    public Result getResult() {
-	return this.result;
     }
     
 }

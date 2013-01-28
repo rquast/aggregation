@@ -18,6 +18,17 @@ public class Rule extends ArrayList<RulePart> {
 	parse(ruleStr);
     }
 
+    public Result calculate(Selection selection) throws NoMatchException, ErrorFlagException, InvalidRulePartException {
+	for (RulePart rulePart: this) {
+	    if (rulePart.size() == 0 && lastIndexOf(rulePart) == (size() - 1)) {
+		return rulePart.getResult();
+	    } else if (rulePart.match(selection)) {
+		return rulePart.getResult();
+	    } 
+	}
+	throw new NoMatchException();
+    }
+    
     public void parse(String ruleStr) throws InvalidRulePartException {
 	clear();
 	String[] ruleStrArr = ruleStr.split("\\:");
@@ -33,17 +44,6 @@ public class Rule extends ArrayList<RulePart> {
 	    add(rulePart);
 	}
 	
-    }
-    
-    public Result calculate(Selection selection) throws NoMatchException, ErrorFlagException, InvalidRulePartException {
-	for (RulePart rulePart: this) {
-	    if (rulePart.size() == 0 && lastIndexOf(rulePart) == (size() - 1)) {
-		return rulePart.getResult();
-	    } else if (rulePart.match(selection)) {
-		return rulePart.getResult();
-	    } 
-	}
-	throw new NoMatchException();
     }
 
 }

@@ -6,12 +6,9 @@ public abstract class AbstractFunction implements IConditionPart {
     
     protected boolean negated = false;
     
+    @Override
     public boolean isNegated() {
 	return this.negated;
-    }
-    
-    public void setNegated(boolean negated) {
-	this.negated = negated;
     }
     
     public int parseIntFunctionParameter(String conditionName) throws InvalidRulePartException {
@@ -21,6 +18,11 @@ public abstract class AbstractFunction implements IConditionPart {
 	} catch (Exception ex) {
 	    throw new InvalidRulePartException(ex);
 	}
+    }
+    
+    @Override
+    public void setNegated(boolean negated) {
+	this.negated = negated;
     }
     
 }

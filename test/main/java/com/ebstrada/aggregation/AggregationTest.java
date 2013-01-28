@@ -32,13 +32,13 @@ public class AggregationTest {
     }
     
     @Test
-    public void testDefaultAggregate() throws Exception {
+    public void testAndOrCombinations1() throws Exception {
 	Rule rule = new Rule();
-	rule.parse("A?+1");
+	rule.parse("A,B?+1:B,C?+2:A,C|C,D?+3:+0");
 	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(new String[]{"A"}));
+	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
 	double aggregate = aggregation.getAggregate();
-	Assert.assertEquals(1.0d, aggregate);
+	Assert.assertEquals(3.0d, aggregate);
     }
     
     @Test
@@ -62,103 +62,23 @@ public class AggregationTest {
     }
     
     @Test
-    public void testUserSpecifiedFlagException1() throws Exception {
-	exception.expect(ErrorFlagException.class);
+    public void testDefaultAggregate() throws Exception {
 	Rule rule = new Rule();
-	rule.parse("a?+1:b?!!error!!:!!blank!!?-6:2");
+	rule.parse("A?+1");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"A"}));
+	double aggregate = aggregation.getAggregate();
+	Assert.assertEquals(1.0d, aggregate);
+    }
+    
+    @Test
+    public void testDefaultRulePart() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("A?+1:0");
 	aggregation.setRule(rule);
 	aggregation.setSelection(new Selection(new String[]{"B"}));
-	aggregation.getAggregate();
-    }
-    
-    @Test
-    public void testUserSpecifiedFlagException2() throws Exception {
-	exception.expect(ErrorFlagException.class);
-	Rule rule = new Rule();
-	rule.parse("!!blank!!?!!error!!");
-	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(null));
-	aggregation.getAggregate();
-    }
-    
-    @Test
-    public void testUserSpecifiedFlagException3() throws Exception {
-	exception.expect(ErrorFlagException.class);
-	Rule rule = new Rule();
-	rule.parse("C,D?!!error!!:C?+1");
-	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
-	aggregation.getAggregate();
-    }
-    
-    @Test
-    public void testUserSpecifiedFlagException4() throws Exception {
-	Rule rule = new Rule();
-	rule.parse("C,D?!!error!!:C?+1");
-	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(new String[]{"C"}));
-	double mark = aggregation.getAggregate();
-	Assert.assertEquals(1.0d, mark);
-    }
-    
-    @Test
-    public void testAndOrCombinations1() throws Exception {
-	Rule rule = new Rule();
-	rule.parse("A,B?+1:B,C?+2:A,C|C,D?+3:+0");
-	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
-	double aggregate = aggregation.getAggregate();
-	Assert.assertEquals(3.0d, aggregate);
-    }
-    
-    @Test
-    public void testWildCards1() throws Exception {
-	Rule rule = new Rule();
-	rule.parse("'''?+3:''?+2:C,D?+3:+0");
-	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
-	double aggregate = aggregation.getAggregate();
-	Assert.assertEquals(2.0d, aggregate);
-    }
-    
-    @Test
-    public void testWildCards2() throws Exception {
-	exception.expect(NoMatchException.class);
-	Rule rule = new Rule();
-	rule.parse("'''?+3");
-	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
-	aggregation.getAggregate();
-    }
-
-    @Test
-    public void testWildCards3() throws Exception {
-	exception.expect(NoMatchException.class);
-	Rule rule = new Rule();
-	rule.parse("'''?+3");
-	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(null));
-	aggregation.getAggregate();
-    }
-    
-    @Test
-    public void testWildCards4() throws Exception {
-	exception.expect(NoMatchException.class);
-	Rule rule = new Rule();
-	rule.parse("'?+3");
-	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(new String[]{}));
-	aggregation.getAggregate();
-    }
-    
-    @Test
-    public void testThrowFlagIfMoreThanOneSelected() throws Exception {
-	exception.expect(ErrorFlagException.class);
-	Rule rule = new Rule();
-	rule.parse("''?!!error!!:B?+1:0");
-	aggregation.setRule(rule);
-	aggregation.setSelection(new Selection(new String[]{"A", "B"}));
-	aggregation.getAggregate();
+	double score = aggregation.getAggregate();
+	Assert.assertEquals(0.0d, score);
     }
     
     @Test
@@ -191,13 +111,93 @@ public class AggregationTest {
     }
     
     @Test
-    public void testDefaultRulePart() throws Exception {
+    public void testThrowFlagIfMoreThanOneSelected() throws Exception {
+	exception.expect(ErrorFlagException.class);
 	Rule rule = new Rule();
-	rule.parse("A?+1:0");
+	rule.parse("''?!!error!!:B?+1:0");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"A", "B"}));
+	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testUserSpecifiedFlagException1() throws Exception {
+	exception.expect(ErrorFlagException.class);
+	Rule rule = new Rule();
+	rule.parse("a?+1:b?!!error!!:!!blank!!?-6:2");
 	aggregation.setRule(rule);
 	aggregation.setSelection(new Selection(new String[]{"B"}));
-	double score = aggregation.getAggregate();
-	Assert.assertEquals(0.0d, score);
+	aggregation.getAggregate();
+    }
+
+    @Test
+    public void testUserSpecifiedFlagException2() throws Exception {
+	exception.expect(ErrorFlagException.class);
+	Rule rule = new Rule();
+	rule.parse("!!blank!!?!!error!!");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(null));
+	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testUserSpecifiedFlagException3() throws Exception {
+	exception.expect(ErrorFlagException.class);
+	Rule rule = new Rule();
+	rule.parse("C,D?!!error!!:C?+1");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
+	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testUserSpecifiedFlagException4() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("C,D?!!error!!:C?+1");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"C"}));
+	double mark = aggregation.getAggregate();
+	Assert.assertEquals(1.0d, mark);
+    }
+    
+    @Test
+    public void testWildCards1() throws Exception {
+	Rule rule = new Rule();
+	rule.parse("'''?+3:''?+2:C,D?+3:+0");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
+	double aggregate = aggregation.getAggregate();
+	Assert.assertEquals(2.0d, aggregate);
+    }
+    
+    @Test
+    public void testWildCards2() throws Exception {
+	exception.expect(NoMatchException.class);
+	Rule rule = new Rule();
+	rule.parse("'''?+3");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{"C", "D"}));
+	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testWildCards3() throws Exception {
+	exception.expect(NoMatchException.class);
+	Rule rule = new Rule();
+	rule.parse("'''?+3");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(null));
+	aggregation.getAggregate();
+    }
+    
+    @Test
+    public void testWildCards4() throws Exception {
+	exception.expect(NoMatchException.class);
+	Rule rule = new Rule();
+	rule.parse("'?+3");
+	aggregation.setRule(rule);
+	aggregation.setSelection(new Selection(new String[]{}));
+	aggregation.getAggregate();
     }
     
 }

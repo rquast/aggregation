@@ -14,6 +14,10 @@ public class Localizer {
     public static ResourceBundle bundle = 
 	    ResourceBundle.getBundle("com.ebstrada.aggregation.i18n.resources.messages", currentLocale);
     
+    public static Locale getCurrentLocale() {
+        return currentLocale;
+    }
+
     public static String localize(String key) {
 	try {
 	    return bundle.getString(key);
@@ -22,10 +26,6 @@ public class Localizer {
 	    logger.warn("Missing translation: " + key);
 	    return key;
 	}
-    }
-
-    public static Locale getCurrentLocale() {
-        return currentLocale;
     }
 
     public static void setCurrentLocale(Locale currentLocale) {

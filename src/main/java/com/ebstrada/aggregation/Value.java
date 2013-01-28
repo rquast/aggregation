@@ -10,23 +10,9 @@ public class Value implements IConditionPart {
         return value;
     }
 
-    public void parse(String conditionPartStr) {
-	if (conditionPartStr.startsWith("!")) {
-	    this.negated = true;
-	    this.value = conditionPartStr.replaceFirst("!", "");
-	} else {
-	    this.value = conditionPartStr;
-	}
-    }
-
     @Override
     public boolean isNegated() {
 	return this.negated;
-    }
-
-    @Override
-    public void setNegated(boolean negated) {
-	this.negated = negated;
     }
 
     @Override
@@ -43,6 +29,21 @@ public class Value implements IConditionPart {
 	    }
 	}
 	return false;
+    }
+
+    @Override
+    public void parse(String conditionPartStr) {
+	if (conditionPartStr.startsWith("!")) {
+	    this.negated = true;
+	    this.value = conditionPartStr.replaceFirst("!", "");
+	} else {
+	    this.value = conditionPartStr;
+	}
+    }
+
+    @Override
+    public void setNegated(boolean negated) {
+	this.negated = negated;
     }
 
 }

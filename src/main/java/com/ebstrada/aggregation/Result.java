@@ -9,18 +9,18 @@ public class Result {
     private ErrorFlagException flagException;
 
     public double getScore() throws ErrorFlagException {
-	if ( this.flagException != null ) {
+	if (this.flagException != null) {
 	    throw this.flagException;
 	}
         return score;
     }
 
-    public void setScore(double score) {
-	this.score = score;
-    }
-
     public void setException(ErrorFlagException flagException) {
 	this.flagException = flagException;
+    }
+
+    public void setScore(double score) {
+	this.score = score;
     }
 
 }

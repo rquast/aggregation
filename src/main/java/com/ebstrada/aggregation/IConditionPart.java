@@ -6,10 +6,10 @@ public interface IConditionPart {
     
     public boolean isNegated();
     
-    public void setNegated(boolean negated);
-
     public boolean match(Selection selectionValues);
-    
+
     public void parse(String conditionPartStr) throws InvalidRulePartException;
+    
+    public void setNegated(boolean negated);
     
 }

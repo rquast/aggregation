@@ -4,7 +4,7 @@ public class FunctionBlank extends AbstractFunction {
 
     @Override
     public boolean match(Selection selectionValues) {
-	if ( selectionValues == null || selectionValues.size() <= 0 ) {
+	if (selectionValues == null || selectionValues.size() <= 0) {
 	    return negated ? false : true;
 	} else {
 	    return negated ? true : false;
