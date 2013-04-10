@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 public class Localizer {
     
-    public static Locale currentLocale = Locale.getDefault();
+    public static Locale currentLocale = new Locale("en");
     
     private static final Logger logger = Logger.getLogger(Localizer.class);
 
@@ -30,6 +30,11 @@ public class Localizer {
 
     public static void setCurrentLocale(Locale currentLocale) {
         Localizer.currentLocale = currentLocale;
+        try {
+            ResourceBundle.getBundle("com.ebstrada.aggregation.i18n.resources.messages", currentLocale);
+        } catch ( Exception ex ) {
+            ResourceBundle.getBundle("com.ebstrada.aggregation.i18n.resources.messages", new Locale("en"));
+        }
     }
 
 }
