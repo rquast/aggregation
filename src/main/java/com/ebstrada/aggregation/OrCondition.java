@@ -20,6 +20,9 @@ public class OrCondition extends ArrayList<AndCondition> {
     }
 
     public void parse(String conditionStr) throws InvalidRulePartException {
+	if ( conditionStr == null ) {
+	    throw new InvalidRulePartException();
+	}
 	for (String andConditionStr: conditionStr.split("\\|")) {
 	    AndCondition andCondition = new AndCondition();
 	    andCondition.parse(andConditionStr);
