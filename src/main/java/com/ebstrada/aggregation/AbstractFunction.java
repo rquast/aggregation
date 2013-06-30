@@ -1,5 +1,7 @@
 package com.ebstrada.aggregation;
 
+import java.util.ArrayList;
+
 import com.ebstrada.aggregation.exception.InvalidRulePartException;
 
 public abstract class AbstractFunction implements IConditionPart {
@@ -18,6 +20,28 @@ public abstract class AbstractFunction implements IConditionPart {
 	} catch (Exception ex) {
 	    throw new InvalidRulePartException(ex);
 	}
+    }
+    
+    public ArrayList<Double> parseRangeFunctionParameter(String rangeString) throws InvalidRulePartException {
+
+	String rangeStr = rangeString.substring(rangeString.indexOf('(') + 1, rangeString.length() - 1);
+	String[] rangeParts = rangeStr.split("\\.\\.");
+
+	if ( rangeParts == null || rangeParts.length != 2 ) {
+	    throw new InvalidRulePartException();
+	}
+
+	try {
+	    double low = Double.parseDouble(rangeParts[0].trim());
+	    double high = Double.parseDouble(rangeParts[1].trim());
+	    ArrayList<Double> range = new ArrayList<Double>();
+	    range.add(low);
+	    range.add(high);
+	    return range;
+	} catch (Exception ex) {
+	    throw new InvalidRulePartException(ex);
+	}
+
     }
     
     @Override

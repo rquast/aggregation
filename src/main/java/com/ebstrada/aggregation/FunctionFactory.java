@@ -8,6 +8,8 @@ public class FunctionFactory {
     
     private static final String STRING_LENGTH_EQUALS_PREFIX = "strleneq";
     
+    private static final String NUMERIC_RANGE_BETWEEN_PREFIX = "range";
+    
     public static AbstractFunction getFunction(String conditionPartStr) throws InvalidRulePartException {
 	conditionPartStr = conditionPartStr.trim();
 	boolean negated = false;
@@ -23,6 +25,9 @@ public class FunctionFactory {
 	    function.parse(call);
 	} else if (call.toLowerCase().startsWith(STRING_LENGTH_EQUALS_PREFIX)) {
 	    function = new FunctionStrLenEq();
+	    function.parse(call);
+	} else if (call.toLowerCase().startsWith(NUMERIC_RANGE_BETWEEN_PREFIX)) {
+	    function = new FunctionRangeBetween();
 	    function.parse(call);
 	} else {
 	    throw new InvalidRulePartException();
