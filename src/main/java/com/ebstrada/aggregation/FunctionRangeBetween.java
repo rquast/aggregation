@@ -16,7 +16,14 @@ public class FunctionRangeBetween extends AbstractFunction {
 	for ( String str: selectionValues ) {
 	    double value;
 	    try {
-		value = Double.parseDouble(str.trim());
+		if ( str.contains("/") ) {
+		    String[] divisionStr = str.split("/");
+		    double dividend = Double.parseDouble(divisionStr[0].trim());
+		    double divisor = Double.parseDouble(divisionStr[1].trim());
+		    value = dividend / divisor;
+		} else {
+		    value = Double.parseDouble(str.trim());
+		}
 	    } catch (Exception ex) {
 		return negated ? true: false;
 	    }
